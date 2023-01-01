@@ -150,7 +150,7 @@ type Exposure struct {
 	SdkType      string            `protobuf:"bytes,9,opt,name=sdk_type,json=sdkType,proto3" json:"sdk_type,omitempty"`                                                                                                // sdk 类型 golang、cpp、java
 	SdkVersion   string            `protobuf:"bytes,10,opt,name=sdk_version,json=sdkVersion,proto3" json:"sdk_version,omitempty"`                                                                                      // sdk 版本
 	ExposureType ExposureType      `protobuf:"varint,11,opt,name=exposure_type,json=exposureType,proto3,enum=opensource.tab.cache_server.ExposureType" json:"exposure_type,omitempty"`                                 // 曝光方式
-	Mobile       *Mobile           `protobuf:"bytes,12,opt,name=mobile,proto3" json:"mobile,omitempty"`                                                                                                                // 终端设备元数据，可选，也可通过 http header 传入
+	Device       *Device           `protobuf:"bytes,12,opt,name=device,proto3" json:"device,omitempty"`                                                                                                                // 终端设备元数据，可选，也可通过 http header 传入
 	ExtraData    map[string]string `protobuf:"bytes,15,rep,name=extra_data,json=extraData,proto3" json:"extra_data,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"` // 拓展字段
 }
 
@@ -263,9 +263,9 @@ func (x *Exposure) GetExposureType() ExposureType {
 	return ExposureType_EXPOSURE_TYPE_UNKNOWN
 }
 
-func (x *Exposure) GetMobile() *Mobile {
+func (x *Exposure) GetDevice() *Device {
 	if x != nil {
-		return x.Mobile
+		return x.Device
 	}
 	return nil
 }
@@ -277,7 +277,7 @@ func (x *Exposure) GetExtraData() map[string]string {
 	return nil
 }
 
-type Mobile struct {
+type Device struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -288,8 +288,8 @@ type Mobile struct {
 	OsVersion      string `protobuf:"bytes,4,opt,name=os_version,json=osVersion,proto3" json:"os_version,omitempty"`                // 系统平台版本
 }
 
-func (x *Mobile) Reset() {
-	*x = Mobile{}
+func (x *Device) Reset() {
+	*x = Device{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_event_server_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -297,13 +297,13 @@ func (x *Mobile) Reset() {
 	}
 }
 
-func (x *Mobile) String() string {
+func (x *Device) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Mobile) ProtoMessage() {}
+func (*Device) ProtoMessage() {}
 
-func (x *Mobile) ProtoReflect() protoreflect.Message {
+func (x *Device) ProtoReflect() protoreflect.Message {
 	mi := &file_event_server_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -315,33 +315,33 @@ func (x *Mobile) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Mobile.ProtoReflect.Descriptor instead.
-func (*Mobile) Descriptor() ([]byte, []int) {
+// Deprecated: Use Device.ProtoReflect.Descriptor instead.
+func (*Device) Descriptor() ([]byte, []int) {
 	return file_event_server_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *Mobile) GetProjectVersion() string {
+func (x *Device) GetProjectVersion() string {
 	if x != nil {
 		return x.ProjectVersion
 	}
 	return ""
 }
 
-func (x *Mobile) GetPlatform() string {
+func (x *Device) GetPlatform() string {
 	if x != nil {
 		return x.Platform
 	}
 	return ""
 }
 
-func (x *Mobile) GetOsModel() string {
+func (x *Device) GetOsModel() string {
 	if x != nil {
 		return x.OsModel
 	}
 	return ""
 }
 
-func (x *Mobile) GetOsVersion() string {
+func (x *Device) GetOsVersion() string {
 	if x != nil {
 		return x.OsVersion
 	}
@@ -603,10 +603,10 @@ var file_event_server_proto_rawDesc = []byte{
 	0x6f, 0x75, 0x72, 0x63, 0x65, 0x2e, 0x74, 0x61, 0x62, 0x2e, 0x63, 0x61, 0x63, 0x68, 0x65, 0x5f,
 	0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x2e, 0x45, 0x78, 0x70, 0x6f, 0x73, 0x75, 0x72, 0x65, 0x54,
 	0x79, 0x70, 0x65, 0x52, 0x0c, 0x65, 0x78, 0x70, 0x6f, 0x73, 0x75, 0x72, 0x65, 0x54, 0x79, 0x70,
-	0x65, 0x12, 0x3b, 0x0a, 0x06, 0x6d, 0x6f, 0x62, 0x69, 0x6c, 0x65, 0x18, 0x0c, 0x20, 0x01, 0x28,
+	0x65, 0x12, 0x3b, 0x0a, 0x06, 0x64, 0x65, 0x76, 0x69, 0x63, 0x65, 0x18, 0x0c, 0x20, 0x01, 0x28,
 	0x0b, 0x32, 0x23, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x2e, 0x74,
 	0x61, 0x62, 0x2e, 0x63, 0x61, 0x63, 0x68, 0x65, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x2e,
-	0x4d, 0x6f, 0x62, 0x69, 0x6c, 0x65, 0x52, 0x06, 0x6d, 0x6f, 0x62, 0x69, 0x6c, 0x65, 0x12, 0x53,
+	0x44, 0x65, 0x76, 0x69, 0x63, 0x65, 0x52, 0x06, 0x64, 0x65, 0x76, 0x69, 0x63, 0x65, 0x12, 0x53,
 	0x0a, 0x0a, 0x65, 0x78, 0x74, 0x72, 0x61, 0x5f, 0x64, 0x61, 0x74, 0x61, 0x18, 0x0f, 0x20, 0x03,
 	0x28, 0x0b, 0x32, 0x34, 0x2e, 0x6f, 0x70, 0x65, 0x6e, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x2e,
 	0x74, 0x61, 0x62, 0x2e, 0x63, 0x61, 0x63, 0x68, 0x65, 0x5f, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72,
@@ -616,7 +616,7 @@ var file_event_server_proto_rawDesc = []byte{
 	0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65,
 	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38,
-	0x01, 0x22, 0x87, 0x01, 0x0a, 0x06, 0x4d, 0x6f, 0x62, 0x69, 0x6c, 0x65, 0x12, 0x27, 0x0a, 0x0f,
+	0x01, 0x22, 0x87, 0x01, 0x0a, 0x06, 0x44, 0x65, 0x76, 0x69, 0x63, 0x65, 0x12, 0x27, 0x0a, 0x0f,
 	0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x76, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x18,
 	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0e, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x56, 0x65,
 	0x72, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x1a, 0x0a, 0x08, 0x70, 0x6c, 0x61, 0x74, 0x66, 0x6f, 0x72,
@@ -715,7 +715,7 @@ var file_event_server_proto_goTypes = []interface{}{
 	(ExposureType)(0),     // 0: opensource.tab.cache_server.ExposureType
 	(Code)(0),             // 1: opensource.tab.cache_server.Code
 	(*Exposure)(nil),      // 2: opensource.tab.cache_server.Exposure
-	(*Mobile)(nil),        // 3: opensource.tab.cache_server.Mobile
+	(*Device)(nil),        // 3: opensource.tab.cache_server.Device
 	(*Event)(nil),         // 4: opensource.tab.cache_server.Event
 	(*ExposureGroup)(nil), // 5: opensource.tab.cache_server.ExposureGroup
 	(*EventGroup)(nil),    // 6: opensource.tab.cache_server.EventGroup
@@ -725,7 +725,7 @@ var file_event_server_proto_goTypes = []interface{}{
 }
 var file_event_server_proto_depIdxs = []int32{
 	0, // 0: opensource.tab.cache_server.Exposure.exposure_type:type_name -> opensource.tab.cache_server.ExposureType
-	3, // 1: opensource.tab.cache_server.Exposure.mobile:type_name -> opensource.tab.cache_server.Mobile
+	3, // 1: opensource.tab.cache_server.Exposure.device:type_name -> opensource.tab.cache_server.Device
 	8, // 2: opensource.tab.cache_server.Exposure.extra_data:type_name -> opensource.tab.cache_server.Exposure.ExtraDataEntry
 	9, // 3: opensource.tab.cache_server.Event.metadata:type_name -> opensource.tab.cache_server.Event.MetadataEntry
 	2, // 4: opensource.tab.cache_server.ExposureGroup.exposures:type_name -> opensource.tab.cache_server.Exposure
@@ -761,7 +761,7 @@ func file_event_server_proto_init() {
 			}
 		}
 		file_event_server_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Mobile); i {
+			switch v := v.(*Device); i {
 			case 0:
 				return &v.state
 			case 1:

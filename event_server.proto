@@ -36,11 +36,11 @@ message Exposure {
   string sdk_type = 9; // sdk 类型 golang、cpp、java
   string sdk_version = 10; // sdk 版本
   ExposureType exposure_type = 11; // 曝光方式
-  Mobile mobile = 12; // 终端设备元数据，可选，也可通过 http header 传入
+  Device device = 12; // 终端设备元数据，可选，也可通过 http header 传入
   map<string, string> extra_data = 15; // 拓展字段
 }
 
-message Mobile {
+message Device {
   string project_version = 1; // 业务版本
   string platform = 2; // 平台类型 Windows/MacOS/iPhone/Android/iPod/iPad/Linux/UNIX/Unknown
   string os_model = 3; // 声明浏览器操作系统或者设备类型，QQBrowser/UCBrowser
