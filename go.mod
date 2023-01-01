@@ -1,4 +1,4 @@
-module git.woa.com/tencent_abtest/protocol/protoc-event-server
+module git.woa.com/tencent_abtest/protocol/protoc_event_server
 
 go 1.17
 
