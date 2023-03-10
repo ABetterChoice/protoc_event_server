@@ -11,14 +11,14 @@ enum ExposureType {
   EXPOSURE_TYPE_MANUAL = 2; // 手动记录曝光，由开发者调用记录曝光的 api
 }
 
-enum Code {
-  CODE_SUCCESS = 0;                          // 正常返回
-  CODE_NO_PERMISSION = 1001;                 // 无权限
-  CODE_TRAFFIC_LIMIT = 1002;                 // 限流返回
-  CODE_INVALID_PROJECT_ID = 1003;            // 入参 projectID 出错
-  CODE_SERVER_ERR = 1004;                    // 服务器处理异常
-  CODE_INVALID_PARAM = 1005;                 // 非法参数
-  CODE_SAME_VERSION = 2001;                  // 版本未更新
+enum EventServerCode {
+  EVENT_SERVER_CODE_SUCCESS = 0;                          // 正常返回
+  EVENT_SERVER_CODE_NO_PERMISSION = 1001;                 // 无权限
+  EVENT_SERVER_CODE_TRAFFIC_LIMIT = 1002;                 // 限流返回
+  EVENT_SERVER_CODE_INVALID_PROJECT_ID = 1003;            // 入参 projectID 出错
+  EVENT_SERVER_CODE_SERVER_ERR = 1004;                    // 服务器处理异常
+  EVENT_SERVER_CODE_INVALID_PARAM = 1005;                 // 非法参数
+  EVENT_SERVER_CODE_SAME_VERSION = 2001;                  // 版本未更新
 }
 
 // 曝光上报
@@ -67,7 +67,7 @@ message EventGroup {
 }
 
 message CommonResp {
-  Code code = 1; // 错误码
+  EventServerCode code = 1; // 错误码
   string message = 2; // 详细信息描述
 }
 
