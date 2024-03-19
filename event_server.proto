@@ -56,6 +56,27 @@ message Event {
   map<string, string> metadata = 10; // 一条日志里多个 kv 组合
 }
 
+// 埋点监控事件数据
+message MonitorEvent {
+  enum status {
+    STATUS_SUCCESS = 0; // 成功
+    STATUS_UNEXPECTED = -1; // 非预期
+  }
+  int64 time = 1; // 时间戳，精确到秒
+  string ip = 2; // 10.0.0.8
+  string project_id = 3; // 项目ID
+  string event_name = 4; // 事件名
+  float latency = 5; // 时延，单位us
+  status status_code = 6; // 状态
+  string message = 7; // 非预期事件错误原因、正常事件描述
+  string sdk_type = 8; // sdk 类型，EG GOLANG\CPP\JAVA\NODEJS\CSHARP
+  string sdk_version = 9; // v1.5.18
+  string invoke_path = 10; // 事件触发的调用路径，堆栈信息
+  string input_data = 11; // 事件的输入参数
+  string output_data = 12; // 事件的输出信息
+  map<string, string> ext_info = 13; // 拓展信息
+}
+
 // 批量上报曝光
 message ExposureGroup {
   repeated Exposure exposures = 1; // 多条曝光记录
