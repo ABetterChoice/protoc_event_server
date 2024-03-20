@@ -108,5 +108,11 @@ service EventServer {
       post: "/v1/event_group/log"
       body: "*"
     };
+  }; // 批量监控事件数据
+  rpc LogMonitorEventGroup (MonitorEventGroup) returns (CommonResp) {
+    option (google.api.http) = {
+      post: "/v1/monitor_event/log"
+      body: "*"
+    };
   }; // 批量记录事件数据
 }

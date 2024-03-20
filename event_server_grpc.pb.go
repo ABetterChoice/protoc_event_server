@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	EventServer_LogExposureGroup_FullMethodName = "/opensource.tab.cache_server.EventServer/LogExposureGroup"
-	EventServer_LogEventGroup_FullMethodName    = "/opensource.tab.cache_server.EventServer/LogEventGroup"
+	EventServer_LogExposureGroup_FullMethodName     = "/opensource.tab.cache_server.EventServer/LogExposureGroup"
+	EventServer_LogEventGroup_FullMethodName        = "/opensource.tab.cache_server.EventServer/LogEventGroup"
+	EventServer_LogMonitorEventGroup_FullMethodName = "/opensource.tab.cache_server.EventServer/LogMonitorEventGroup"
 )
 
 // EventServerClient is the client API for EventServer service.
@@ -29,6 +30,7 @@ const (
 type EventServerClient interface {
 	LogExposureGroup(ctx context.Context, in *ExposureGroup, opts ...grpc.CallOption) (*CommonResp, error)
 	LogEventGroup(ctx context.Context, in *EventGroup, opts ...grpc.CallOption) (*CommonResp, error)
+	LogMonitorEventGroup(ctx context.Context, in *MonitorEventGroup, opts ...grpc.CallOption) (*CommonResp, error)
 }
 
 type eventServerClient struct {
@@ -57,12 +59,22 @@ func (c *eventServerClient) LogEventGroup(ctx context.Context, in *EventGroup, o
 	return out, nil
 }
 
+func (c *eventServerClient) LogMonitorEventGroup(ctx context.Context, in *MonitorEventGroup, opts ...grpc.CallOption) (*CommonResp, error) {
+	out := new(CommonResp)
+	err := c.cc.Invoke(ctx, EventServer_LogMonitorEventGroup_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EventServerServer is the server API for EventServer service.
 // All implementations should embed UnimplementedEventServerServer
 // for forward compatibility
 type EventServerServer interface {
 	LogExposureGroup(context.Context, *ExposureGroup) (*CommonResp, error)
 	LogEventGroup(context.Context, *EventGroup) (*CommonResp, error)
+	LogMonitorEventGroup(context.Context, *MonitorEventGroup) (*CommonResp, error)
 }
 
 // UnimplementedEventServerServer should be embedded to have forward compatible implementations.
@@ -74,6 +86,9 @@ func (UnimplementedEventServerServer) LogExposureGroup(context.Context, *Exposur
 }
 func (UnimplementedEventServerServer) LogEventGroup(context.Context, *EventGroup) (*CommonResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LogEventGroup not implemented")
+}
+func (UnimplementedEventServerServer) LogMonitorEventGroup(context.Context, *MonitorEventGroup) (*CommonResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LogMonitorEventGroup not implemented")
 }
 
 // UnsafeEventServerServer may be embedded to opt out of forward compatibility for this service.
@@ -123,6 +138,24 @@ func _EventServer_LogEventGroup_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EventServer_LogMonitorEventGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MonitorEventGroup)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EventServerServer).LogMonitorEventGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EventServer_LogMonitorEventGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EventServerServer).LogMonitorEventGroup(ctx, req.(*MonitorEventGroup))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // EventServer_ServiceDesc is the grpc.ServiceDesc for EventServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -137,6 +170,10 @@ var EventServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LogEventGroup",
 			Handler:    _EventServer_LogEventGroup_Handler,
+		},
+		{
+			MethodName: "LogMonitorEventGroup",
+			Handler:    _EventServer_LogMonitorEventGroup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
