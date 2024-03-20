@@ -77,6 +77,10 @@ message MonitorEvent {
   map<string, string> ext_info = 13; // 拓展信息
 }
 
+message MonitorEventGroup {
+  repeated MonitorEvent events = 1; // 多条监控上报日志
+}
+
 // 批量上报曝光
 message ExposureGroup {
   repeated Exposure exposures = 1; // 多条曝光记录
