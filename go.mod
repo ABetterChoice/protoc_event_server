@@ -1,4 +1,4 @@
-module git.tencent.com/abetterchoice/protocol/protoc_event_server
+module github.com/abetterchoice/protoc_event_server
 
 go 1.17
 
