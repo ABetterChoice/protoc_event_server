@@ -1,99 +1,99 @@
 syntax = "proto3";
 package opensource.tab.cache_server;
-// 注意：这里go_package指定的是协议生戨git上的地址，不要和上面的服务的git仓库地址一样
+// Note: go_package here specifies the address of the protocol repository on git, which should not be the same as the git repository address of the service above.
 option go_package="github.com/abetterchoice/protoc_event_server";
 
 import "google/api/annotations.proto";
 
 enum ExposureType {
   EXPOSURE_TYPE_UNKNOWN = 0;
-  EXPOSURE_TYPE_AUTOMATIC = 1; // sdk 自动记录曝光
-  EXPOSURE_TYPE_MANUAL = 2; // 手动记录曝光，由开发者调用记录曝光的 api
+  EXPOSURE_TYPE_AUTOMATIC = 1; // sdk Automatically record exposure
+  EXPOSURE_TYPE_MANUAL = 2; // Manually record exposure, the developer calls the API to record exposure
 }
 
 enum EventServerCode {
-  EVENT_SERVER_CODE_SUCCESS = 0;                          // 正常返回
-  EVENT_SERVER_CODE_NO_PERMISSION = 1001;                 // 无权限
-  EVENT_SERVER_CODE_TRAFFIC_LIMIT = 1002;                 // 限流返回
-  EVENT_SERVER_CODE_INVALID_PROJECT_ID = 1003;            // 入参 projectID 出错
-  EVENT_SERVER_CODE_SERVER_ERR = 1004;                    // 服务器处理异常
-  EVENT_SERVER_CODE_INVALID_PARAM = 1005;                 // 非法参数
-  EVENT_SERVER_CODE_SAME_VERSION = 2001;                  // 版本未更新
+  EVENT_SERVER_CODE_SUCCESS = 0;                          // success
+  EVENT_SERVER_CODE_NO_PERMISSION = 1001;                 // no permission
+  EVENT_SERVER_CODE_TRAFFIC_LIMIT = 1002;                 // traffic limit
+  EVENT_SERVER_CODE_INVALID_PROJECT_ID = 1003;            //  projectID error
+  EVENT_SERVER_CODE_SERVER_ERR = 1004;                    // server error
+  EVENT_SERVER_CODE_INVALID_PARAM = 1005;                 // invalid param
+  EVENT_SERVER_CODE_SAME_VERSION = 2001;                  // Version not updated
 }
 
-// 曝光上报
+// Exposure Report
 message Exposure {
-  // 必填
-  string unit_id = 1; // unitID，同一个 UnitID 稳定命中同一个实验版本
-  int64 group_id = 2; // 命中的实验版本 ID
-  string project_id = 3; // 项目 ID
-  int64 time = 4; // 时间戳，精确到秒
+  // Required
+  string unit_id = 1; // unitID，The same UnitID stably hits the same experimental version
+  int64 group_id = 2; // Experimental version of hit ID
+  string project_id = 3; // project ID
+  int64 time = 4; // Timestamp, accurate to seconds
   // optional
-  string layer_key = 5; // 层 key
-  string exp_key = 6; // 实验 key
-  string unit_type = 7; // unitID 类型，预留
-  string cluster_id = 8; // clusterID 网络实验群 ID，高阶实验预留
-  string sdk_type = 9; // sdk 类型 golang、cpp、java
-  string sdk_version = 10; // sdk 版本
-  ExposureType exposure_type = 11; // 曝光方式
-  Device device = 12; // 终端设备元数据，可选，也可通过 http header 传入
-  map<string, string> extra_data = 15; // 拓展字段
+  string layer_key = 5; // layer key
+  string exp_key = 6; // experiment key
+  string unit_type = 7; // unitID type, reserved
+  string cluster_id = 8; // clusterID Network experiment group ID, reserved for advanced experiments
+  string sdk_type = 9; // sdk type golang、cpp、java
+  string sdk_version = 10; // sdk version
+  ExposureType exposure_type = 11; // ExposureType
+  Device device = 12; // End device metadata, optional, can also be passed in via http header
+  map<string, string> extra_data = 15; // Extended fields
 }
 
 message Device {
-  string project_version = 1; // 业务版本
-  string platform = 2; // 平台类型 Windows/MacOS/iPhone/Android/iPod/iPad/Linux/UNIX/Unknown
-  string os_model = 3; // 声明浏览器操作系统或者设备类型，QQBrowser/UCBrowser
-  string os_version = 4; // 系统平台版本
+  string project_version = 1; // project version
+  string platform = 2; // Platform Type Windows/MacOS/iPhone/Android/iPod/iPad/Linux/UNIX/Unknown
+  string os_model = 3; // Declare the browser operating system or device type，QQBrowser/UCBrowser
+  string os_version = 4; // System platform version
 }
 
-// 通用事件上报
+// General event reporting
 message Event {
-  // 必填
-  string event_name = 1; // 事件名
-  string project_id = 2; // 项目 ID
-  int64 time = 4; // 时间戳，精确到秒
-  map<string, string> metadata = 10; // 一条日志里多个 kv 组合
+  // Required
+  string event_name = 1; // event name
+  string project_id = 2; // project id
+  int64 time = 4; // Timestamp, accurate to seconds
+  map<string, string> metadata = 10; // Multiple kv combinations in one log
 }
 
-// 埋点监控事件数据
+// Event data of buried point monitoring
 message MonitorEvent {
   enum status {
-    STATUS_SUCCESS = 0; // 成功
-    STATUS_UNEXPECTED = -1; // 非预期
+    STATUS_SUCCESS = 0; // success
+    STATUS_UNEXPECTED = -1; // unexpected
   }
-  int64 time = 1; // 时间戳，精确到秒
+  int64 time = 1; // Timestamp, accurate to seconds
   string ip = 2; // 10.0.0.8
-  string project_id = 3; // 项目ID
-  string event_name = 4; // 事件名
-  float latency = 5; // 时延，单位us
-  status status_code = 6; // 状态
-  string message = 7; // 非预期事件错误原因、正常事件描述
-  string sdk_type = 8; // sdk 类型，EG GOLANG\CPP\JAVA\NODEJS\CSHARP
+  string project_id = 3; // project id
+  string event_name = 4; // event name
+  float latency = 5; // latency，unit us
+  status status_code = 6; // status
+  string message = 7; // Unexpected event error cause, normal event description
+  string sdk_type = 8; // sdk type，EG GOLANG\CPP\JAVA\NODEJS\CSHARP
   string sdk_version = 9; // v1.5.18
-  string invoke_path = 10; // 事件触发的调用路径，堆栈信息
-  string input_data = 11; // 事件的输入参数
-  string output_data = 12; // 事件的输出信息
-  map<string, string> ext_info = 13; // 拓展信息
+  string invoke_path = 10; // Event-triggered call path, stack information
+  string input_data = 11; // Event input parameters
+  string output_data = 12; // Event output information
+  map<string, string> ext_info = 13; // Further information
 }
 
 message MonitorEventGroup {
-  repeated MonitorEvent events = 1; // 多条监控上报日志
+  repeated MonitorEvent events = 1; // Multiple monitoring report logs
 }
 
-// 批量上报曝光
+// Batch reporting exposure
 message ExposureGroup {
-  repeated Exposure exposures = 1; // 多条曝光记录
+  repeated Exposure exposures = 1; // Multiple exposure records
 }
 
-// 批量上报事件
+// Batch reporting events
 message EventGroup {
-  repeated Event events = 1; // 多条事件记录
+  repeated Event events = 1; // Multiple event records
 }
 
 message CommonResp {
-  EventServerCode code = 1; // 错误码
-  string message = 2; // 详细信息描述
+  EventServerCode code = 1; // error code
+  string message = 2; // Detailed description
 }
 
 service EventServer {
@@ -102,17 +102,17 @@ service EventServer {
       post: "/v1/exposure_group/log"
       body: "*"
     };
-  }; // 批量记录曝光数据
+  }; // Batch recording of exposure data
   rpc LogEventGroup (EventGroup) returns (CommonResp) {
     option (google.api.http) = {
       post: "/v1/event_group/log"
       body: "*"
     };
-  }; // 批量监控事件数据
+  }; // Batch monitoring event data
   rpc LogMonitorEventGroup (MonitorEventGroup) returns (CommonResp) {
     option (google.api.http) = {
       post: "/v1/monitor_event/log"
       body: "*"
     };
-  }; // 批量记录事件数据
+  }; // Batch logging of event data
 }
